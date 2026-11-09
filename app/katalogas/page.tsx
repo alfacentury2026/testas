@@ -23,9 +23,10 @@ export default function CatalogPage() {
         ("gallery" in collection ? collection.gallery.items[0]?.image : undefined) ??
         collectionCoverFallbacks[slug],
     }))
+    .sort((a, b) => a.title.localeCompare(b.title, "lt"))
     .filter(({ title }) =>
       title.toLowerCase().includes(search.trim().toLowerCase()),
-  );
+    );
 
   return (
     <main className="bg-stone-100">

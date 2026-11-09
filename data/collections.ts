@@ -1,6 +1,64 @@
+const collectionDescriptions = {
+  minimalistines:
+    "Minimalistinės vidaus durys sukurtos vertinantiems švarias linijas ir subtilų dizainą. Šios kolekcijos puikiai dera moderniuose, skandinaviško stiliaus ir šiuolaikiniuose interjeruose. Paprastos formos bei lengvai pritaikomi dekorai leidžia duris integruoti į įvairias gyvenamąsias ir darbo erdves.",
+  modernios:
+    "Modernios vidaus durys išsiskiria šiuolaikišku dizainu, įvairiais modeliais ir plačiu dekorų pasirinkimu. Kolekcijos pritaikytos tiek butams, tiek namams, kur svarbus funkcionalumas, kokybė ir moderni estetika. Tai praktiškas sprendimas ieškantiems stilingų vidaus durų kasdieniam naudojimui.",
+  frezuotos:
+    "Frezuotos vidaus durys išsiskiria dekoratyviniais raštais ir išraiškingu dizainu. Frezavimo elementai suteikia durims charakterio ir padeda sukurti išskirtinį interjero vaizdą. Ši kategorija tinka ieškantiems elegantiškų bei vizualiai išskirtinių vidaus durų.",
+  klasikines:
+    "Klasikinio stiliaus vidaus durys pasižymi harmoningomis proporcijomis ir laiko patikrintu dizainu. Šios kolekcijos puikiai tinka tiek tradiciniams, tiek modernios klasikos interjerams. Elegantiška išvaizda ir universalumas leidžia durims išlikti aktualioms daugelį metų.",
+  loft:
+    "Loft tipo vidaus durys sukurtos moderniems ir industrinio stiliaus interjerams. Išraiškingos linijos, šiuolaikiški sprendimai ir išskirtinė estetika padeda sukurti charakteringą erdvės vaizdą. Šios durys puikiai dera loftuose, moderniuose butuose ir šiuolaikiniuose namuose.",
+  stiklintos:
+    "Stiklintos vidaus durys padeda išlaikyti natūralios šviesos sklaidą ir suteikia interjerui daugiau erdvės pojūčio. Stiklo elementai kuria lengvumo įspūdį, todėl šios durys puikiai tinka tiek gyvenamosioms, tiek darbo erdvėms. Tai praktiškas sprendimas norintiems suderinti estetiką ir funkcionalumą.",
+};
+
+type CollectionGroup = keyof typeof collectionDescriptions;
+
+export const collectionFeatures: Record<CollectionGroup, readonly string[]> = {
+  minimalistines: [
+    "Švarios ir minimalistinės formos",
+    "Tinka moderniems interjerams",
+    "Lengvai derinami dekorai",
+    "Universalus dizainas kasdienėms erdvėms",
+  ],
+  modernios: [
+    "Šiuolaikiškas vidaus durų dizainas",
+    "Įvairūs modelių variantai",
+    "Populiariausi dekorų sprendimai",
+    "Tinka namams ir butams",
+  ],
+  frezuotos: [
+    "Išraiškingi frezavimo elementai",
+    "Dekoratyvus ir išskirtinis dizainas",
+    "Stiprus interjero akcentas",
+    "Modernumo ir elegancijos derinys",
+  ],
+  klasikines: [
+    "Klasikinio stiliaus estetika",
+    "Subalansuotos proporcijos",
+    "Laikui nepavaldus dizainas",
+    "Tinka tradiciniams interjerams",
+  ],
+  loft: [
+    "Industrinio stiliaus dizainas",
+    "Moderni ir išskirtinė išvaizda",
+    "Tinka loft tipo erdvėms",
+    "Ryškus interjero akcentas",
+  ],
+  stiklintos: [
+    "Daugiau natūralios šviesos",
+    "Vizualiai lengvesnė erdvė",
+    "Modernus stiklo dizainas",
+    "Tinka gyvenamosioms ir darbo erdvėms",
+  ],
+};
+
 type GalleryCollection = {
   title: string;
+  group: CollectionGroup;
   description: string;
+  features: readonly string[];
   gallery: {
     type: "decor";
     items: { name: string; image: string }[];
@@ -10,11 +68,14 @@ type GalleryCollection = {
 function createCollection(
   title: string,
   folder: string,
+  group: CollectionGroup,
   filenames: string[],
 ): GalleryCollection {
   return {
     title,
-    description: "",
+    group,
+    description: collectionDescriptions[group],
+    features: collectionFeatures[group],
     gallery: {
       type: "decor",
       items: filenames.map((filename) => ({
@@ -34,32 +95,44 @@ function createCollection(
 export const collections = {
   kano: {
     title: "Kano",
-    description: "Laikinas Kano kolekcijos aprašymas testavimui.",
+    group: "klasikines",
+    description: collectionDescriptions.klasikines,
+    features: collectionFeatures.klasikines,
   },
 
   uvero: {
     title: "Uvero",
-    description: "123",
+    group: "modernios",
+    description: collectionDescriptions.modernios,
+    features: collectionFeatures.modernios,
   },
 
   fado: {
     title: "Fado",
-    description: "123",
+    group: "klasikines",
+    description: collectionDescriptions.klasikines,
+    features: collectionFeatures.klasikines,
   },
 
   rumba: {
     title: "Rumba",
-    description: "123",
+    group: "klasikines",
+    description: collectionDescriptions.klasikines,
+    features: collectionFeatures.klasikines,
   },
 
   della: {
     title: "Della",
-    description: "123",
+    group: "modernios",
+    description: collectionDescriptions.modernios,
+    features: collectionFeatures.modernios,
   },
 
   arte: {
     title: "Arte",
-    description: "Arte kolekcijos durys skirtingais modeliais ir dekorais.",
+    group: "frezuotos",
+    description: collectionDescriptions.frezuotos,
+    features: collectionFeatures.frezuotos,
     gallery: {
       type: "decor" as const,
       items: [
@@ -86,7 +159,9 @@ export const collections = {
 
   "arte-black": {
     title: "Arte Black",
-    description: "",
+    group: "frezuotos",
+    description: collectionDescriptions.frezuotos,
+    features: collectionFeatures.frezuotos,
     gallery: {
       type: "decor" as const,
       items: [
@@ -110,29 +185,34 @@ export const collections = {
     },
   },
 
-  aklinos: createCollection("Aklinos", "aklinos", [
+  aklinos: createCollection("Aklinos", "aklinos", "minimalistines", [
     "pelne-biale-lak.jpg",
     "pelne-dab-bielony-lak.jpg",
     "pelne-dab-sandynawski-lak.jpg",
     "pelne-dab-srebrny-lak.jpg",
   ]),
-  "aklinos-h2112": createCollection("Aklinos H2112", "aklinos h2112", [
+  "aklinos-h2112": createCollection(
+    "Aklinos H2112",
+    "aklinos h2112",
+    "minimalistines",
+    [
     "pelne-gladkie-h2112-dab-alpin.jpg",
     "pelne-gladkie-h2112-dab-bawaria.jpg",
     "pelne-gladkie-h2112-still.jpg",
-  ]),
-  antares: createCollection("Antares", "antares", [
+    ],
+  ),
+  antares: createCollection("Antares", "antares", "modernios", [
     "antares-10--dab-olejowany.jpg",
     "antares-20--dab-olejowany.jpg",
     "antares-30--dab-olejowany.jpg",
     "antares-40--dab-olejowany.jpg",
     "antares-50--dab-olejowany.jpg",
   ]),
-  bello: createCollection("Bello", "bello", [
+  bello: createCollection("Bello", "bello", "modernios", [
     "bello-10--dab-latte.jpg",
     "bello-20--dab-latte.jpg",
   ]),
-  bergamo: createCollection("Bergamo", "bergamo", [
+  bergamo: createCollection("Bergamo", "bergamo", "modernios", [
     "bergamo-10--bialy-mat.jpg",
     "bergamo-10--dab-bawaria.jpg",
     "bergamo-10--dab-cpl.jpg",
@@ -149,7 +229,7 @@ export const collections = {
     "bergamo-70--bialy-mat.jpg",
     "bergamo-70--dab-cpl.jpg",
   ]),
-  brandy: createCollection("Brandy", "brandy", [
+  brandy: createCollection("Brandy", "brandy", "modernios", [
     "brandy-10--dab-stary.jpg",
     "brandy-20--dab-norweski.jpg",
     "brandy-20--dab-piaskowy.jpg",
@@ -161,18 +241,18 @@ export const collections = {
     "brandy-70--dab-norweski.jpg",
     "brandy-80--dab-norweski.jpg",
   ]),
-  classic: createCollection("Classic", "classic", [
+  classic: createCollection("Classic", "classic", "klasikines", [
     "classic-10-cashmere.jpg",
     "classic-20-cashmere.jpg",
   ]),
-  duo: createCollection("Duo", "duo", [
+  duo: createCollection("Duo", "duo", "modernios", [
     "duo-10--czarny-mat-dab-piaskowy.jpg",
     "duo-20--bialy-mat.jpg",
     "duo-20--czarny-mat.jpg",
     "duo-20--czarny-mat-bialy-mat.jpg",
     "duo-20--czarny-mat-miedz.jpg",
   ]),
-  etna: createCollection("Etna", "etna", [
+  etna: createCollection("Etna", "etna", "modernios", [
     "etna-10--bialy-mat.jpg",
     "etna-10--dab-latte.jpg",
     "etna-10--dab-olejowany.jpg",
@@ -191,7 +271,7 @@ export const collections = {
     "etna-70--orzech-muscato.jpg",
     "etna-70--orzech-wloski.jpg",
   ]),
-  evi: createCollection("Evi", "evi", [
+  evi: createCollection("Evi", "evi", "modernios", [
     "evi-10--dab-latte.jpg",
     "evi-10--dab-latte_1.jpg",
     "evi-10--grau.jpg",
@@ -201,21 +281,21 @@ export const collections = {
     "evi-30--dab-bawaria.jpg",
     "evi-30--dab-bawaria_1.jpg",
   ]),
-  incanto: createCollection("Incanto", "incanto", [
+  incanto: createCollection("Incanto", "incanto", "klasikines", [
     "incanto-10-indygo.jpg",
     "incanto-20-indygo.png",
     "incanto-30-indygo.jpg",
     "incanto-40-indygo.jpg",
     "incanto-50-indygo.jpg",
   ]),
-  intarsja: createCollection("Intarsja", "intarsja", [
+  intarsja: createCollection("Intarsja", "intarsja", "frezuotos", [
     "intarsja-100-czarny-mat.jpg",
     "intarsja-60-orzech-palermo.jpg",
     "intarsja-70-czarny-mat.jpg",
     "intarsja-80-dab-bawaria.jpg",
     "intarsja-90-grau.jpg",
   ]),
-  kampo: createCollection("Kampo", "kampo", [
+  kampo: createCollection("Kampo", "kampo", "modernios", [
     "kampo-10--grau.jpg",
     "kampo-10--grau_1.jpg",
     "kampo-20--grau.jpg",
@@ -229,9 +309,13 @@ export const collections = {
     "kampo-60--grau.jpg",
     "kampo-60--grau_1.jpg",
   ]),
-  lamane: createCollection("Lamane", "lamane", ["drzwi-lamane-cashmere.jpg"]),
-  lamelo: createCollection("Lamelo", "lamelo", ["lamelo-dab-bawaria.jpg"]),
-  latino: createCollection("Latino", "latino", [
+  lamane: createCollection("Lamane", "lamane", "modernios", [
+    "drzwi-lamane-cashmere.jpg",
+  ]),
+  lamelo: createCollection("Lamelo", "lamelo", "modernios", [
+    "lamelo-dab-bawaria.jpg",
+  ]),
+  latino: createCollection("Latino", "latino", "modernios", [
     "latino-10--akacja-morava.jpg",
     "latino-10--orzech-wloski.jpg",
     "latino-20--bialy-mat.jpg",
@@ -244,12 +328,12 @@ export const collections = {
     "latino-60--akacja-morava.jpg",
     "latino-70--akacja-morava.jpg",
   ]),
-  "loft-h240": createCollection("Loft H240", "loft h240", [
+  "loft-h240": createCollection("Loft H240", "loft h240", "loft", [
     "loft-h240-model-110-szklo-transparentne.jpg",
     "loft-h240-model-120-szklo-transparentne-grafit.jpg",
     "loft-h240-model-130-szklo-vsg-biale.jpg",
   ]),
-  lugo: createCollection("Lugo", "lugo", [
+  lugo: createCollection("Lugo", "lugo", "modernios", [
     "lugo-10--antracyt.jpg",
     "lugo-10--dab-bawaria.jpg",
     "lugo-20--antracyt.jpg",
@@ -258,20 +342,20 @@ export const collections = {
     "lugo-30--dab-olejowany.jpg",
     "lugo-40--antracyt.jpg",
   ]),
-  lupus: createCollection("Lupus", "lupus", [
+  lupus: createCollection("Lupus", "lupus", "modernios", [
     "lupus-10--antracyt.jpg",
     "lupus-10--dab-arctic.jpg",
     "lupus-10--dab-montana.jpg",
     "lupus-10--orzech-wloski.jpg",
     "lupus-20--cashmere.jpg",
   ]),
-  magnetic: createCollection("Magnetic", "magnetic", [
+  magnetic: createCollection("Magnetic", "magnetic", "modernios", [
     "skrzydlo-magnetic-l-z-dlugim-pochwytem.jpg",
     "skrzydlo-magnetic-l-z-dlugim-pochwytem-bialy-mat.jpg",
     "skrzydlo-magnetic-s.jpg",
     "skrzydlo-magnetic-s-dab-arctic.jpg",
   ]),
-  mars: createCollection("Mars", "mars", [
+  mars: createCollection("Mars", "mars", "modernios", [
     "mars-10--dab-olejowany.jpg",
     "mars-10--dab-olejowany_1.jpg",
     "mars-20--dab-olejowany.jpg",
@@ -281,7 +365,7 @@ export const collections = {
     "mars-40--dab-olejowany.jpg",
     "mars-40--dab-olejowany_1.jpg",
   ]),
-  mediolan: createCollection("Mediolan", "mediolan", [
+  mediolan: createCollection("Mediolan", "mediolan", "modernios", [
     "mediolan-10--bialy-mat.jpg",
     "mediolan-10--czarny-mat.jpg",
     "mediolan-10--czarny-mat_1.jpg",
@@ -293,7 +377,7 @@ export const collections = {
     "mediolan-30--czarny-mat.jpg",
     "mediolan-30--czarny-mat_1.jpg",
   ]),
-  mobi: createCollection("Mobi", "mobi", [
+  mobi: createCollection("Mobi", "mobi", "modernios", [
     "mobi-10--bialy-mat.jpg",
     "mobi-10--bialy-mat_1.jpg",
     "mobi-20--bialy-mat.jpg",
@@ -305,7 +389,7 @@ export const collections = {
     "mobi-50--bialy-mat.jpg",
     "mobi-50--bialy-mat_1.jpg",
   ]),
-  moderno: createCollection("Moderno", "moderno", [
+  moderno: createCollection("Moderno", "moderno", "modernios", [
     "intarsja-40-cashmere.jpg",
     "intarsja-40-clay.jpg",
     "intarsja-40-orzech-wloski.jpg",
@@ -313,7 +397,7 @@ export const collections = {
     "moderno-40-cieply-bez-cpl.jpg",
     "moderno-50-cieply-bez-cpl.jpg",
   ]),
-  murano: createCollection("Murano", "murano", [
+  murano: createCollection("Murano", "murano", "modernios", [
     "murano-10--dab-olejowany.jpg",
     "murano-10--dab-olejowany_1.jpg",
     "murano-20--dab-olejowany.jpg",
@@ -321,7 +405,7 @@ export const collections = {
     "murano-30--dab-olejowany.jpg",
     "murano-30--dab-olejowany_1.jpg",
   ]),
-  piano: createCollection("Piano", "piano", [
+  piano: createCollection("Piano", "piano", "loft", [
     "piano-10--caschmere.jpg",
     "piano-10-czarny-mat.jpg",
     "piano-20-clay.jpg",
@@ -334,7 +418,7 @@ export const collections = {
     "piano-50-dab-bawaria.jpg",
     "piano-60--grau.jpg",
   ]),
-  plato: createCollection("Plato", "plato", [
+  plato: createCollection("Plato", "plato", "stiklintos", [
     "plato-10-szyba-transparentna.jpg",
     "plato-20-szyba-mleczna.jpg",
     "plato-30-szyba-grafit-transparentna.jpg",
@@ -343,7 +427,7 @@ export const collections = {
     "plato-60-szyba-transparentna-z-aplikacja.jpg",
     "plato-70-szyba-mleczna-z-aplikacja.jpg",
   ]),
-  prix: createCollection("Prix", "prix", [
+  prix: createCollection("Prix", "prix", "modernios", [
     "prix-10--bialy.jpg",
     "prix-10--dab-aurea.jpg",
     "prix-10--dab-latte.jpg",
@@ -356,14 +440,14 @@ export const collections = {
     "prix-50--dab-olejowany.jpg",
     "prix-50--dab-oregon.jpg",
   ]),
-  rocco: createCollection("Rocco", "rocco", [
+  rocco: createCollection("Rocco", "rocco", "modernios", [
     "rocco-20--dab-bawaria.jpg",
     "rocco-30--dab-carbon.jpg",
     "rocco-30--dab-latte.jpg",
     "rocco-40--dab-montana.jpg",
     "rocco-50--orzech-wloski.jpg",
   ]),
-  "sara-pro": createCollection("Sara Pro", "sara pro", [
+  "sara-pro": createCollection("Sara Pro", "sara pro", "minimalistines", [
     "sara-pro-h220-czarny-mat.jpg",
     "sara-pro-h220-grau.jpg",
     "sara-pro-h240-bialy-mat.jpg",
@@ -371,7 +455,7 @@ export const collections = {
     "sara-pro-h240-dab-bawaria.jpg",
     "sara-pro-h240-grau.jpg",
   ]),
-  tago: createCollection("Tago", "tago", [
+  tago: createCollection("Tago", "tago", "klasikines", [
     "tago-pelne--bialy.jpg",
     "tago-pelne--clay.png",
     "tago-pelne--czarny-mat.jpg",
@@ -379,7 +463,7 @@ export const collections = {
     "tago-z-lustrem--clay.png",
     "tago-z-lustrem--czarny-mat.jpg",
   ]),
-  toledo: createCollection("Toledo", "toledo", [
+  toledo: createCollection("Toledo", "toledo", "modernios", [
     "toledo-10--dab-cpl.jpg",
     "toledo-10--dab-cpl_1.jpg",
     "toledo-20--dab-cpl.jpg",
@@ -391,7 +475,7 @@ export const collections = {
     "toledo-50--dab-cpl.jpg",
     "toledo-50--dab-cpl_1.jpg",
   ]),
-  vanilla: createCollection("Vanilla", "vanilla", [
+  vanilla: createCollection("Vanilla", "vanilla", "modernios", [
     "vanilla-10--dab-bawaria.jpg",
     "vanilla-10--dab-bawaria_1.jpg",
     "vanilla-10--dab-polarny-cpl.png",
@@ -410,7 +494,7 @@ export const collections = {
     "vanilla-80--dab-bawaria.jpg",
     "vanilla-80--dab-polarny-cpl.jpg",
   ]),
-  varadero: createCollection("Varadero", "varadero", [
+  varadero: createCollection("Varadero", "varadero", "klasikines", [
     "varadero-10--cashmere.jpg",
     "varadero-10--cashmere-czarne-oslonki-na-zawiasy.jpg",
     "varadero-10--dab-karmelowy.jpg",
@@ -422,7 +506,7 @@ export const collections = {
     "varadero-30--indygo-szklo-mlecznehartowane-zawiasy-srebrne.jpg",
     "varadero-40--still-szklo-dark-grey-zawiasy-srebrne.jpg",
   ]),
-  vicar: createCollection("Vicar", "vicar", [
+  vicar: createCollection("Vicar", "vicar", "modernios", [
     "vicar-10--clay.jpg",
     "vicar-10--orzech-wloski.jpg",
     "vicar-20--orzech-palermo.jpg",
@@ -430,7 +514,7 @@ export const collections = {
     "vicar-30--dab-alpin.jpg",
     "vicar-40--grau.jpg",
   ]),
-  vinci: createCollection("Vinci", "vinci", [
+  vinci: createCollection("Vinci", "vinci", "modernios", [
     "vinci-10--bialy.jpg",
     "vinci-10--bialy-mat.jpg",
     "vinci-10--dab-bawaria.jpg",
@@ -444,7 +528,7 @@ export const collections = {
     "vinci-50--dab-bawaria.jpg",
     "vinci-50--dab-bawaria_1.jpg",
   ]),
-  zitron: createCollection("Zitron", "zitron", [
+  zitron: createCollection("Zitron", "zitron", "modernios", [
     "zitron-10--bialy.jpg",
     "zitron-20--dab-cpl.jpg",
     "zitron-30--bialy.jpg",

@@ -13,6 +13,7 @@ type CollectionGalleryProps = {
   slug: string;
   title: string;
   description: string;
+  features: readonly string[];
   gallery: {
     type: "decor" | "model";
     items: readonly GalleryItem[];
@@ -23,6 +24,7 @@ export default function CollectionGallery({
   slug,
   title,
   description,
+  features,
   gallery,
 }: CollectionGalleryProps) {
   const [selectedItem, setSelectedItem] = useState(gallery.items[0]);
@@ -129,10 +131,26 @@ export default function CollectionGallery({
             <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl">
               {title}
             </h1>
-            <div className="mt-8 min-h-56 border border-stone-200 bg-white sm:min-h-64">
-              <p className="p-6 text-sm leading-6 text-stone-600">
+            <div className="mt-8 border border-stone-200 bg-white p-6">
+              <p className="text-sm leading-6 text-stone-600">
                 {description}
               </p>
+              <ul className="mt-5 space-y-3">
+                {features.map((feature) => (
+                  <li
+                    key={feature}
+                    className="flex items-start gap-3 text-sm leading-6 text-stone-700"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="font-semibold text-emerald-800"
+                    >
+                      ✓
+                    </span>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
             <Link
               href={`/kontaktai?kolekcija=${slug}`}
