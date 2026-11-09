@@ -1,4 +1,13 @@
-export default function ContactPage() {
+import ContactForm from "./ContactForm";
+
+type ContactPageProps = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export default async function ContactPage({ searchParams }: ContactPageProps) {
+  const { kolekcija } = await searchParams;
+  const collection = typeof kolekcija === "string" ? kolekcija : "";
+
   return (
     <main>
       <section className="bg-stone-50 py-20 sm:py-28">
@@ -57,70 +66,7 @@ export default function ContactPage() {
             <h2 className="text-2xl font-semibold tracking-tight text-black">
               Parašykite mums
             </h2>
-            <form className="mt-8 space-y-6">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="mb-2 block text-sm font-medium text-stone-700"
-                >
-                  Vardas
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  className="w-full rounded-md border border-stone-300 bg-white px-4 py-3 text-stone-900 outline-none transition focus:border-stone-500"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="phone"
-                  className="mb-2 block text-sm font-medium text-stone-700"
-                >
-                  Telefono numeris
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  className="w-full rounded-md border border-stone-300 bg-white px-4 py-3 text-stone-900 outline-none transition focus:border-stone-500"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="mb-2 block text-sm font-medium text-stone-700"
-                >
-                  El. paštas
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  className="w-full rounded-md border border-stone-300 bg-white px-4 py-3 text-stone-900 outline-none transition focus:border-stone-500"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="message"
-                  className="mb-2 block text-sm font-medium text-stone-700"
-                >
-                  Žinutė
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  className="w-full resize-y rounded-md border border-stone-300 bg-white px-4 py-3 text-stone-900 outline-none transition focus:border-stone-500"
-                />
-              </div>
-              <button
-                type="button"
-                className="inline-flex w-full items-center justify-center rounded-md bg-black px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-stone-800 sm:w-auto"
-              >
-                Siųsti užklausą
-              </button>
-            </form>
+            <ContactForm collection={collection} />
           </div>
         </div>
       </section>

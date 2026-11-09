@@ -1,18 +1,28 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import CollectionGallery from "./CollectionGallery";
 import { collections } from "../../../data/collections";
+import {
+  getCollectionMetadata,
+  isCollectionSlug,
+} from "../metadata";
 
-type CollectionSlug = keyof typeof collections;
+type CollectionPageProps = {
+  params: Promise<{ slug: string }>;
+};
 
-function isCollectionSlug(slug: string): slug is CollectionSlug {
-  return Object.hasOwn(collections, slug);
+export async function generateMetadata({
+  params,
+}: CollectionPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  if (!isCollectionSlug(slug)) notFound();
+
+  return getCollectionMetadata(slug);
 }
 
 export default async function CollectionPage({
   params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+}: CollectionPageProps) {
   const { slug } = await params;
 
   if (!isCollectionSlug(slug)) notFound();
@@ -22,6 +32,7 @@ export default async function CollectionPage({
 
   return (
     <CollectionGallery
+      slug={slug}
       title={collection.title}
       description={collection.description}
       gallery={collection.gallery}
