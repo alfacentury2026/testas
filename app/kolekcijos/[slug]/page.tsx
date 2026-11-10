@@ -34,6 +34,7 @@ export default async function CollectionPage({
     <CollectionGallery
       slug={slug}
       title={collection.title}
+      options={collection.options}
       description={collection.description}
       features={collection.features}
       gallery={collection.gallery}

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import CollectionTitle from "../CollectionTitle";
 import { collections } from "../../../data/collections";
 
 const collection = collections.kano;
@@ -120,9 +121,10 @@ export default function KanoCollectionPage() {
           </div>
 
           <div className="py-2 lg:py-4">
-            <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl">
-              {collection.title}
-            </h1>
+            <CollectionTitle
+              title={collection.title}
+              options={collection.options}
+            />
             <div className="mt-8 border border-stone-200 bg-white p-6">
               <p className="text-sm leading-6 text-stone-600">
                 {collection.description}

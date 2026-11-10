@@ -14,6 +14,56 @@ const collectionDescriptions = {
 };
 
 type CollectionGroup = keyof typeof collectionDescriptions;
+export type CollectionOption = 1 | 2 | 3;
+
+const collectionOptionsByTitle = {
+  Kano: [1, 2, 3],
+  Uvero: [1, 2, 3],
+  Fado: [1, 2, 3],
+  Rumba: [1, 2, 3],
+  Della: [1],
+  Arte: [1, 2, 3],
+  "Arte Black": [1, 2, 3],
+  Aklinos: [1, 2, 3],
+  "Aklinos H2112": [1, 2],
+  Antares: [1, 2],
+  Bello: [1, 2],
+  Bergamo: [1, 2],
+  Brandy: [1, 2],
+  Classic: [1, 2, 3],
+  Duo: [1],
+  Etna: [1, 2, 3],
+  Evi: [1, 2, 3],
+  Incanto: [1, 2, 3],
+  Intarsja: [1, 2, 3],
+  Kampo: [1, 2, 3],
+  Lamane: [],
+  Lamelo: [1],
+  Latino: [1, 2],
+  "Loft H240": [2],
+  Lugo: [1, 2],
+  Lupus: [1, 2, 3],
+  Magnetic: [2],
+  Mars: [1, 2],
+  Mediolan: [1, 2],
+  Mobi: [1, 2, 3],
+  Moderno: [1, 2, 3],
+  Murano: [1, 2],
+  Piano: [1, 2, 3],
+  Plato: [],
+  Prix: [1, 2, 3],
+  Rocco: [1, 2],
+  "Sara Pro": [2, 3],
+  Tago: [1, 2, 3],
+  Toledo: [1, 2],
+  Vanilla: [1, 2],
+  Varadero: [1, 2, 3],
+  Vicar: [1, 2],
+  Vinci: [1, 2, 3],
+  Zitron: [1, 2],
+} as const satisfies Record<string, readonly CollectionOption[]>;
+
+type CollectionTitle = keyof typeof collectionOptionsByTitle;
 
 export const collectionFeatures: Record<CollectionGroup, readonly string[]> = {
   minimalistines: [
@@ -55,10 +105,11 @@ export const collectionFeatures: Record<CollectionGroup, readonly string[]> = {
 };
 
 type GalleryCollection = {
-  title: string;
+  title: CollectionTitle;
   group: CollectionGroup;
   description: string;
   features: readonly string[];
+  options: readonly CollectionOption[];
   gallery: {
     type: "decor";
     items: { name: string; image: string }[];
@@ -66,7 +117,7 @@ type GalleryCollection = {
 };
 
 function createCollection(
-  title: string,
+  title: CollectionTitle,
   folder: string,
   group: CollectionGroup,
   filenames: string[],
@@ -76,6 +127,7 @@ function createCollection(
     group,
     description: collectionDescriptions[group],
     features: collectionFeatures[group],
+    options: collectionOptionsByTitle[title],
     gallery: {
       type: "decor",
       items: filenames.map((filename) => ({
@@ -98,6 +150,7 @@ export const collections = {
     group: "klasikines",
     description: collectionDescriptions.klasikines,
     features: collectionFeatures.klasikines,
+    options: collectionOptionsByTitle.Kano,
   },
 
   uvero: {
@@ -105,6 +158,7 @@ export const collections = {
     group: "modernios",
     description: collectionDescriptions.modernios,
     features: collectionFeatures.modernios,
+    options: collectionOptionsByTitle.Uvero,
   },
 
   fado: {
@@ -112,6 +166,7 @@ export const collections = {
     group: "klasikines",
     description: collectionDescriptions.klasikines,
     features: collectionFeatures.klasikines,
+    options: collectionOptionsByTitle.Fado,
   },
 
   rumba: {
@@ -119,6 +174,7 @@ export const collections = {
     group: "klasikines",
     description: collectionDescriptions.klasikines,
     features: collectionFeatures.klasikines,
+    options: collectionOptionsByTitle.Rumba,
   },
 
   della: {
@@ -126,6 +182,7 @@ export const collections = {
     group: "modernios",
     description: collectionDescriptions.modernios,
     features: collectionFeatures.modernios,
+    options: collectionOptionsByTitle.Della,
   },
 
   arte: {
@@ -133,6 +190,7 @@ export const collections = {
     group: "frezuotos",
     description: collectionDescriptions.frezuotos,
     features: collectionFeatures.frezuotos,
+    options: collectionOptionsByTitle.Arte,
     gallery: {
       type: "decor" as const,
       items: [
@@ -162,6 +220,7 @@ export const collections = {
     group: "frezuotos",
     description: collectionDescriptions.frezuotos,
     features: collectionFeatures.frezuotos,
+    options: collectionOptionsByTitle["Arte Black"],
     gallery: {
       type: "decor" as const,
       items: [

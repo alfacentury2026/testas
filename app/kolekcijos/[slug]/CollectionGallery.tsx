@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import CollectionTitle from "../CollectionTitle";
+import type { CollectionOption } from "../../../data/collections";
 
 type GalleryItem = {
   name: string;
@@ -12,6 +14,7 @@ type GalleryItem = {
 type CollectionGalleryProps = {
   slug: string;
   title: string;
+  options: readonly CollectionOption[];
   description: string;
   features: readonly string[];
   gallery: {
@@ -23,6 +26,7 @@ type CollectionGalleryProps = {
 export default function CollectionGallery({
   slug,
   title,
+  options,
   description,
   features,
   gallery,
@@ -128,9 +132,7 @@ export default function CollectionGallery({
           </div>
 
           <div className="py-2 lg:py-4">
-            <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl">
-              {title}
-            </h1>
+            <CollectionTitle title={title} options={options} />
             <div className="mt-8 border border-stone-200 bg-white p-6">
               <p className="text-sm leading-6 text-stone-600">
                 {description}
