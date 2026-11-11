@@ -151,6 +151,10 @@ export const collections = {
     description: collectionDescriptions.klasikines,
     features: collectionFeatures.klasikines,
     options: collectionOptionsByTitle.Kano,
+    gallery: {
+      type: "decor" as const,
+      items: [{ name: "Baltas mat", image: "/collections/kano/bialy-mat.jpg" }],
+    },
   },
 
   uvero: {
@@ -159,6 +163,15 @@ export const collections = {
     description: collectionDescriptions.modernios,
     features: collectionFeatures.modernios,
     options: collectionOptionsByTitle.Uvero,
+    gallery: {
+      type: "decor" as const,
+      items: [
+        {
+          name: "Uvero 10 - Baltas mat",
+          image: "/collections/uvero/uvero-10 bialy-mat.jpg",
+        },
+      ],
+    },
   },
 
   fado: {
@@ -167,6 +180,12 @@ export const collections = {
     description: collectionDescriptions.klasikines,
     features: collectionFeatures.klasikines,
     options: collectionOptionsByTitle.Fado,
+    gallery: {
+      type: "decor" as const,
+      items: [
+        { name: "Baltas mat", image: "/collections/fado/fado bialy-mat.jpg" },
+      ],
+    },
   },
 
   rumba: {
@@ -175,6 +194,12 @@ export const collections = {
     description: collectionDescriptions.klasikines,
     features: collectionFeatures.klasikines,
     options: collectionOptionsByTitle.Rumba,
+    gallery: {
+      type: "decor" as const,
+      items: [
+        { name: "Baltas mat", image: "/collections/rumba/rumba bialy-mat.jpg" },
+      ],
+    },
   },
 
   della: {
@@ -183,6 +208,10 @@ export const collections = {
     description: collectionDescriptions.modernios,
     features: collectionFeatures.modernios,
     options: collectionOptionsByTitle.Della,
+    gallery: {
+      type: "model" as const,
+      items: [{ name: "Della 10", image: "/collections/della/della-10.jpg" }],
+    },
   },
 
   arte: {

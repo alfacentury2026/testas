@@ -13,17 +13,35 @@ const collectionCoverFallbacks: Record<string, string> = {
   della: "/collections/della/della-10.jpg",
 };
 
+const categories = [
+  { value: "all", label: "Visos" },
+  { value: "minimalistines", label: "Minimalistinės" },
+  { value: "modernios", label: "Modernios" },
+  { value: "frezuotos", label: "Frezuotos" },
+  { value: "klasikines", label: "Klasikinės" },
+  { value: "loft", label: "Loft" },
+  { value: "stiklintos", label: "Stiklintos" },
+] as const;
+
 export default function CatalogPage() {
   const [search, setSearch] = useState("");
-  const filteredCollections = Object.entries(collections)
+  const [selectedCategory, setSelectedCategory] =
+    useState<(typeof categories)[number]["value"]>("all");
+  const allCollections = Object.entries(collections)
     .map(([slug, collection]) => ({
       slug,
       title: collection.title,
+      group: collection.group,
       image:
         ("gallery" in collection ? collection.gallery.items[0]?.image : undefined) ??
         collectionCoverFallbacks[slug],
     }))
-    .sort((a, b) => a.title.localeCompare(b.title, "lt"))
+    .sort((a, b) => a.title.localeCompare(b.title, "lt"));
+  const filteredCollections = allCollections
+    .filter(
+      ({ group }) =>
+        selectedCategory === "all" || group === selectedCategory,
+    )
     .filter(({ title }) =>
       title.toLowerCase().includes(search.trim().toLowerCase()),
     );
@@ -40,7 +58,35 @@ export default function CatalogPage() {
             sprendimą savo interjerui.
           </p>
 
-          <div className="mx-auto mt-8 max-w-md">
+          <div className="mx-auto mt-8 flex max-w-4xl flex-wrap justify-center gap-2">
+            {categories.map((category) => {
+              const count =
+                category.value === "all"
+                  ? allCollections.length
+                  : allCollections.filter(
+                      ({ group }) => group === category.value,
+                    ).length;
+              const isSelected = selectedCategory === category.value;
+
+              return (
+                <button
+                  key={category.value}
+                  type="button"
+                  onClick={() => setSelectedCategory(category.value)}
+                  aria-pressed={isSelected}
+                  className={`rounded-full px-4 py-2 text-sm transition-colors ${
+                    isSelected
+                      ? "bg-stone-900 text-white"
+                      : "bg-stone-200 text-stone-700 hover:bg-stone-300"
+                  }`}
+                >
+                  {category.label} ({count})
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mx-auto mt-4 max-w-md">
             <label htmlFor="collection-search" className="sr-only">
               Ieškoti kolekcijos
             </label>

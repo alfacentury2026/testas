@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import CollectionTitle from "../CollectionTitle";
+import CollectionImageModal from "../CollectionImageModal";
+import RelatedCollections from "../RelatedCollections";
+import type { CollectionSlug } from "../metadata";
 import type { CollectionOption } from "../../../data/collections";
 
 type GalleryItem = {
@@ -12,7 +15,7 @@ type GalleryItem = {
 };
 
 type CollectionGalleryProps = {
-  slug: string;
+  slug: CollectionSlug;
   title: string;
   options: readonly CollectionOption[];
   description: string;
@@ -36,17 +39,6 @@ export default function CollectionGallery({
   const thumbnailTrack = useRef<HTMLDivElement>(null);
   const itemLabel = gallery.type === "decor" ? "dekorą" : "modelį";
   const galleryLabel = gallery.type === "decor" ? "dekorų" : "modelių";
-
-  useEffect(() => {
-    if (!isImageOpen) return;
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setIsImageOpen(false);
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isImageOpen]);
 
   function scrollThumbnails(direction: -1 | 1) {
     thumbnailTrack.current?.scrollBy({
@@ -164,40 +156,16 @@ export default function CollectionGallery({
         </div>
       </section>
 
+      <RelatedCollections slug={slug} />
+
       {isImageOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${title} durų peržiūra, ${selectedItem.name}`}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 sm:p-8"
-        >
-          <button
-            type="button"
-            onClick={() => setIsImageOpen(false)}
-            aria-label="Uždaryti nuotraukos peržiūrą"
-            className="absolute inset-0 h-full w-full cursor-zoom-out"
-          />
-          <div className="relative z-10 h-[min(90vh,1000px)] w-full max-w-3xl border border-white/20 bg-stone-100">
-            <Image
-              src={selectedItem.image}
-              alt={`${title} durys, ${selectedItem.name}`}
-              fill
-              sizes="(min-width: 768px) 672px, 100vw"
-              className="object-contain"
-            />
-            <span className="absolute bottom-4 right-4 bg-emerald-800 px-3 py-2 text-sm font-medium text-white">
-              {selectedItem.name}
-            </span>
-            <button
-              type="button"
-              onClick={() => setIsImageOpen(false)}
-              aria-label="Uždaryti nuotraukos peržiūrą"
-              className="absolute right-3 top-3 bg-white/90 px-3 py-2 text-sm font-medium text-stone-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              Uždaryti
-            </button>
-          </div>
-        </div>
+        <CollectionImageModal
+          title={title}
+          items={gallery.items}
+          selectedItem={selectedItem}
+          onSelect={setSelectedItem}
+          onClose={() => setIsImageOpen(false)}
+        />
       )}
     </main>
   );
